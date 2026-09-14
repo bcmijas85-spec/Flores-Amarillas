@@ -33,7 +33,7 @@ function cerrarPaneles() {
 
 function abrirRegalo() {
   document.getElementById('tarjeta-regalo').classList.add('oculto');
-  document.getElementById('btn-inicio').style.display = 'block';
+  document.getElementById('btn-inicio').style.display = 'inline-block';
   regAlAbierto = true;
   iniciarTypewriter();
 }
@@ -160,11 +160,12 @@ function dibujarFondo() {
   ctx.fillRect(0, HORIZONTE_Y, ANCHO, ALTO - HORIZONTE_Y);
 }
 
-function dibujarGirasol(cx, cy, escala) {
+function dibujarGirasol(cx, cy, escala, letraInicial = "") {
   ctx.save();
   ctx.translate(cx, cy);
   ctx.scale(escala, escala);
 
+  // Tallo
   ctx.strokeStyle = '#228B22';
   ctx.lineWidth = 10;
   ctx.beginPath();
@@ -172,6 +173,7 @@ function dibujarGirasol(cx, cy, escala) {
   ctx.quadraticCurveTo(-10, 120, 0, 240);
   ctx.stroke();
 
+  // Hojas
   ctx.fillStyle = '#1E5B16';
   ctx.beginPath();
   ctx.ellipse(-35, 100, 30, 15, Math.PI / 4, 0, Math.PI * 2);
@@ -180,6 +182,7 @@ function dibujarGirasol(cx, cy, escala) {
   ctx.ellipse(35, 140, 30, 15, -Math.PI / 4, 0, Math.PI * 2);
   ctx.fill();
 
+  // Halo suave
   let gradHalo = ctx.createRadialGradient(0, 0, 20, 0, 0, 110);
   gradHalo.addColorStop(0, 'rgba(255, 239, 176, 0.35)');
   gradHalo.addColorStop(1, 'rgba(255, 239, 176, 0)');
@@ -188,6 +191,7 @@ function dibujarGirasol(cx, cy, escala) {
   ctx.arc(0, 0, 110, 0, Math.PI * 2);
   ctx.fill();
 
+  // Pétalos
   const petalos = 22;
   for (let capa = 0; capa < 2; capa++) {
     const rLong = capa === 0 ? 110 : 90;
@@ -213,11 +217,13 @@ function dibujarGirasol(cx, cy, escala) {
     }
   }
 
+  // Centro Café
   ctx.fillStyle = '#3B2219';
   ctx.beginPath();
   ctx.arc(0, 0, 42, 0, Math.PI * 2);
   ctx.fill();
 
+  // Semillas en Espiral
   const goldenAngle = 137.5 * (Math.PI / 180);
   for (let i = 0; i < 70; i++) {
     let r = Math.sqrt(i) * 4.5;
@@ -230,10 +236,22 @@ function dibujarGirasol(cx, cy, escala) {
     ctx.fill();
   }
 
+  // Inicial dorada grabada en las semillas
+  if (letraInicial) {
+    ctx.save();
+    ctx.fillStyle = '#FFD700';
+    ctx.font = "bold 32px 'Dancing Script', Georgia, cursive";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
+    ctx.shadowBlur = 4;
+    ctx.fillText(letraInicial, 0, 2);
+    ctx.restore();
+  }
+
   ctx.restore();
 }
 
-// --- Pareja Tomada de la Mano ---
 function dibujarPareja(cx, cy, escala) {
   ctx.save();
   ctx.translate(cx, cy);
@@ -277,7 +295,7 @@ function dibujarPareja(cx, cy, escala) {
   ctx.lineTo(6, -42);
   ctx.stroke();
 
-  // Punto de Manos Unidas
+  // Manos Unidas
   ctx.fillStyle = piel;
   ctx.beginPath();
   ctx.arc(4, -42, 4, 0, Math.PI * 2);
@@ -286,14 +304,12 @@ function dibujarPareja(cx, cy, escala) {
   ctx.restore();
 }
 
-// --- Bucle Principal ---
 function animar() {
   tiempo++;
   ctx.clearRect(0, 0, ANCHO, ALTO);
 
   dibujarFondo();
 
-  // Estrellas Titilantes
   estrellas.forEach(e => {
     e.alpha += (Math.random() - 0.5) * 0.05;
     e.alpha = Math.max(0.2, Math.min(1, e.alpha));
@@ -304,9 +320,10 @@ function animar() {
   });
 
   if (regAlAbierto) {
-    dibujarGirasol(180, 480, 0.45);
-    dibujarGirasol(780, 490, 0.4);
-    dibujarGirasol(475, 410, 1.0);
+    // Dibujo de Girasoles con las iniciales solicitadas
+    dibujarGirasol(180, 480, 0.45, "B"); // Girasol Izquierdo: "B"
+    dibujarGirasol(780, 490, 0.4, "Y");  // Girasol Derecho: "Y"
+    dibujarGirasol(475, 410, 1.0, "y");  // Girasol Central Grande: "y"
 
     const parejX = 310;
     const parejY = 560;
@@ -412,7 +429,7 @@ function animar() {
       ctx.fillText("❤️", c.x, c.y);
     }
 
-    // Título Principal Centrado y Elegante
+    // Título Principal Centrado
     if (textoActual.length > 0) {
       ctx.save();
       ctx.fillStyle = "#FFD700";
