@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flores Amarillas para Yudi</title>
+  <!-- Fuente elegante cargada desde Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #080710;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+    }
+    #contenedor {
+      position: relative;
+      width: 100vw;
+      max-width: 950px;
+      height: 100vh;
+      max-height: 720px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    /* Botón de Regresar a Portada */
+    .btn-inicio {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      z-index: 10;
+      background: rgba(30, 30, 46, 0.85);
+      color: #FFD700;
+      border: 1px solid rgba(255, 215, 0, 0.5);
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 13px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+      display: none;
+    }
+    .btn-inicio:hover {
+      background: #FFD700;
+      color: #000;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+    }
+    /* Estilos de las Pestañas */
+    .ui-container {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      z-index: 10;
+      display: flex;
+      gap: 8px;
+    }
+    .btn-pestana {
+      background: rgba(30, 30, 46, 0.85);
+      color: #FFF;
+      border: 1px solid rgba(255, 215, 0, 0.4);
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 13px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+    .btn-pestana:hover, .btn-pestana.activo {
+      background: #FFD700;
+      color: #000;
+      border-color: #FFD700;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+    }
+    .panel-contenido {
+      position: absolute;
+      top: 60px;
+      right: 15px;
+      width: calc(100% - 30px);
+      max-width: 340px;
+      background: rgba(20, 20, 35, 0.95);
+      border: 1px solid #FFD700;
+      border-radius: 10px;
+      padding: 20px 15px 15px;
+      color: #FFF8DC;
+      display: none;
+      z-index: 10;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      animation: fadeIn 0.4s ease;
+    }
+    .panel-contenido.visible {
+      display: block;
+    }
+    .panel-contenido p {
+      margin-bottom: 8px;
+      font-style: italic;
+      text-align: center;
+      line-height: 1.4;
+      font-size: 14px;
+    }
+    .btn-cerrar {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: #FFD700;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    /* Tarjeta de Regalo Modal */
+    #tarjeta-regalo {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 8, 20, 0.88);
+      backdrop-filter: blur(10px);
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    #tarjeta-regalo.oculto {
+      opacity: 0;
+      visibility: hidden;
+    }
+    .caja-regalo {
+      position: relative;
+      width: 200px;
+      height: 160px;
+      background: linear-gradient(135deg, #E91E63, #C2185B);
+      border-radius: 12px;
+      box-shadow: 0 15px 35px rgba(233, 30, 99, 0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.3s ease;
+    }
+    .caja-regalo:hover {
+      transform: scale(1.05);
+    }
+    .cinta-v {
+      position: absolute;
+      width: 35px;
+      height: 100%;
+      background: #FFD700;
+    }
+    .cinta-h {
+      position: absolute;
+      height: 35px;
+      width: 100%;
+      background: #FFD700;
+    }
+    .monio {
+      position: absolute;
+      top: -30px;
+      font-size: 45px;
+    }
+    .texto-regalo {
+      margin-top: 25px;
+      color: #FFF;
+      font-size: 18px;
+      font-weight: bold;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      text-align: center;
+    }
+    .subtexto-regalo {
+      margin-top: 8px;
+      color: #FFD700;
+      font-size: 13px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<div id="contenedor">
+  <canvas id="canvas" width="950" height="720"></canvas>
+
+  <!-- Botón de regresar a la portada -->
+  <button id="btn-inicio" class="btn-inicio" onclick="volverInicio()">🎁 Portada</button>
+
+  <!-- Pestañas UI -->
+  <div class="ui-container">
+    <button class="btn-pestana" onclick="togglePestana('poema')">📜 Poema</button>
+    <button class="btn-pestana" onclick="togglePestana('mensaje')">🎵 Mensaje</button>
+    <button class="btn-pestana" onclick="togglePestana('deseos')">✨ Deseos</button>
+  </div>
+
+  <div id="panel-poema" class="panel-contenido">
+    <button class="btn-cerrar" onclick="cerrarPaneles()">✖</button>
+    <p>Como un girasol buscando el sol,</p>
+    <p>mi cariño siempre te sigue a ti.</p>
+    <p>¡Que tu día brille lleno de luz! 🌻</p>
+  </div>
+
+  <div id="panel-mensaje" class="panel-contenido">
+    <button class="btn-cerrar" onclick="cerrarPaneles()">✖</button>
+    <p>Una melodía especial para Yudi ❤️</p>
+    <p>Para llenar de alegría tu corazón en cada instante.</p>
+  </div>
+
+  <div id="panel-deseos" class="panel-contenido">
+    <button class="btn-cerrar" onclick="cerrarPaneles()">✖</button>
+    <p>Que la felicidad te acompañe siempre,</p>
+    <p>hoy, mañana y todos los días de tu vida.</p>
+  </div>
+
+  <!-- Tarjeta de Regalo Inicial -->
+  <div id="tarjeta-regalo" onclick="abrirRegalo()">
+    <div class="caja-regalo">
+      <div class="cinta-v"></div>
+      <div class="cinta-h"></div>
+      <div class="monio">🎀</div>
+    </div>
+    <div class="texto-regalo">🎁 UN REGALO ESPECIAL 🎁</div>
+    <div class="subtexto-regalo">¡Haz clic en la caja para abrir!</div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
