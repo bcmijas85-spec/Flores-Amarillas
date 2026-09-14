@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flores Amarillas para Yudi</title>
-  <!-- Fuente elegante cargada desde Google Fonts -->
+  <!-- Fuente elegante desde Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
@@ -39,66 +39,62 @@
       width: 100%;
       height: 100%;
     }
-    /* Botón de Regresar a Portada */
-    .btn-inicio {
+    /* Barra Superior Adaptable a Celular */
+    .header-bar {
       position: absolute;
-      top: 15px;
-      left: 15px;
+      top: 10px;
+      left: 10px;
+      right: 10px;
       z-index: 10;
-      background: rgba(30, 30, 46, 0.85);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .btn-inicio {
+      background: rgba(30, 30, 46, 0.9);
       color: #FFD700;
       border: 1px solid rgba(255, 215, 0, 0.5);
-      padding: 8px 14px;
+      padding: 6px 12px;
       border-radius: 8px;
       cursor: pointer;
       font-weight: bold;
-      font-size: 13px;
-      transition: all 0.3s ease;
+      font-size: 12px;
       backdrop-filter: blur(5px);
       display: none;
     }
-    .btn-inicio:hover {
-      background: #FFD700;
-      color: #000;
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
-    }
-    /* Estilos de las Pestañas */
     .ui-container {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      z-index: 10;
       display: flex;
-      gap: 8px;
+      gap: 6px;
+      flex-wrap: wrap;
     }
     .btn-pestana {
-      background: rgba(30, 30, 46, 0.85);
+      background: rgba(30, 30, 46, 0.9);
       color: #FFF;
       border: 1px solid rgba(255, 215, 0, 0.4);
-      padding: 8px 14px;
+      padding: 6px 10px;
       border-radius: 8px;
       cursor: pointer;
       font-weight: bold;
-      font-size: 13px;
-      transition: all 0.3s ease;
+      font-size: 12px;
       backdrop-filter: blur(5px);
     }
-    .btn-pestana:hover, .btn-pestana.activo {
+    .btn-pestana:hover, .btn-pestana.activo, .btn-inicio:hover {
       background: #FFD700;
       color: #000;
-      border-color: #FFD700;
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
     }
     .panel-contenido {
       position: absolute;
-      top: 60px;
-      right: 15px;
-      width: calc(100% - 30px);
-      max-width: 340px;
+      top: 55px;
+      right: 10px;
+      width: calc(100% - 20px);
+      max-width: 320px;
       background: rgba(20, 20, 35, 0.95);
       border: 1px solid #FFD700;
       border-radius: 10px;
-      padding: 20px 15px 15px;
+      padding: 18px 12px 12px;
       color: #FFF8DC;
       display: none;
       z-index: 10;
@@ -110,20 +106,20 @@
       display: block;
     }
     .panel-contenido p {
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       font-style: italic;
       text-align: center;
-      line-height: 1.4;
-      font-size: 14px;
+      line-height: 1.3;
+      font-size: 13px;
     }
     .btn-cerrar {
       position: absolute;
-      top: 5px;
-      right: 10px;
+      top: 4px;
+      right: 8px;
       background: none;
       border: none;
       color: #FFD700;
-      font-size: 16px;
+      font-size: 15px;
       cursor: pointer;
       font-weight: bold;
     }
@@ -147,8 +143,8 @@
     }
     .caja-regalo {
       position: relative;
-      width: 200px;
-      height: 160px;
+      width: 190px;
+      height: 150px;
       background: linear-gradient(135deg, #E91E63, #C2185B);
       border-radius: 12px;
       box-shadow: 0 15px 35px rgba(233, 30, 99, 0.4);
@@ -162,33 +158,33 @@
     }
     .cinta-v {
       position: absolute;
-      width: 35px;
+      width: 32px;
       height: 100%;
       background: #FFD700;
     }
     .cinta-h {
       position: absolute;
-      height: 35px;
+      height: 32px;
       width: 100%;
       background: #FFD700;
     }
     .monio {
       position: absolute;
-      top: -30px;
-      font-size: 45px;
+      top: -28px;
+      font-size: 40px;
     }
     .texto-regalo {
-      margin-top: 25px;
+      margin-top: 22px;
       color: #FFF;
-      font-size: 18px;
+      font-size: 17px;
       font-weight: bold;
       text-shadow: 0 2px 10px rgba(0,0,0,0.5);
       text-align: center;
     }
     .subtexto-regalo {
-      margin-top: 8px;
+      margin-top: 6px;
       color: #FFD700;
-      font-size: 13px;
+      font-size: 12px;
     }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-10px); }
@@ -201,14 +197,14 @@
 <div id="contenedor">
   <canvas id="canvas" width="950" height="720"></canvas>
 
-  <!-- Botón de regresar a la portada -->
-  <button id="btn-inicio" class="btn-inicio" onclick="volverInicio()">🎁 Portada</button>
-
-  <!-- Pestañas UI -->
-  <div class="ui-container">
-    <button class="btn-pestana" onclick="togglePestana('poema')">📜 Poema</button>
-    <button class="btn-pestana" onclick="togglePestana('mensaje')">🎵 Mensaje</button>
-    <button class="btn-pestana" onclick="togglePestana('deseos')">✨ Deseos</button>
+  <!-- Barra de botones adaptada -->
+  <div class="header-bar">
+    <button id="btn-inicio" class="btn-inicio" onclick="volverInicio()">🎁 Portada</button>
+    <div class="ui-container">
+      <button class="btn-pestana" onclick="togglePestana('poema')">📜 Poema</button>
+      <button class="btn-pestana" onclick="togglePestana('mensaje')">🎵 Mensaje</button>
+      <button class="btn-pestana" onclick="togglePestana('deseos')">✨ Deseos</button>
+    </div>
   </div>
 
   <div id="panel-poema" class="panel-contenido">
